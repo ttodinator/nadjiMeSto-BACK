@@ -12,6 +12,9 @@ namespace Domain
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string UserEmail { get; set; }
+        public string CellphoneNumber { get; set; }
+
         public List<AppUserRole> UserRoles { get; set; }
 
 

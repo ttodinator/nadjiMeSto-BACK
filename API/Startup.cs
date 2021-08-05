@@ -72,6 +72,29 @@ namespace API
                 };
             });
 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("ADMIN"));
+                opt.AddPolicy("RequireAdminOrModeratorRole", policy => policy.RequireRole("ADMIN", "RESTAURANT"));
+            });
+
+            services.AddCors();
+
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+
+            /*services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:8100/home")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });*/
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,9 +109,11 @@ namespace API
 
             app.UseRouting();
 
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:8100"));
+
             app.UseAuthentication();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

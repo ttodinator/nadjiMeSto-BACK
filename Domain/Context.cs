@@ -15,6 +15,8 @@ namespace Domain
     {
         public DbSet<Restaurant> Restaurant { get; set; }
         public DbSet<AppUser> AppUser { get; set; }
+        public DbSet<Proba> ProbnaTabela { get; set; }
+
 
 
         public Context(DbContextOptions options):base(options)
