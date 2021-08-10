@@ -21,5 +21,10 @@ namespace Data.Implementation
         {
             return await context.Restaurant.ToListAsync();
         }
+
+        public async Task<Restaurant> GetRestaurantByName(string name)
+        {
+            return await context.Restaurant.FirstAsync(x => x.Name == name);
+        }
     }
 }

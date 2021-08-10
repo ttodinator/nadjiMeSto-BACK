@@ -1,5 +1,6 @@
 ﻿using Data.UnitOfWork;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,12 @@ namespace API.Controllers
         public async Task<ActionResult<List<Restaurant>>> GetRestaurants()
         {
             return await unitOfWork.RepositoryRestaurant.GetAll();
+        }
+
+        [HttpGet("{name}")]
+        public async Task<ActionResult<Restaurant>> GetRestaurant(string name)
+        {
+            return await unitOfWork.RepositoryRestaurant.GetRestaurantByName(name);
         }
 
     }

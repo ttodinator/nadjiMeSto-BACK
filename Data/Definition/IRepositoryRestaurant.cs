@@ -11,6 +11,6 @@ namespace Data.Definition
     {
         Task<List<Restaurant>> GetAll();
 
-
+        Task<Restaurant> GetRestaurantByName(string name);
     }
 }
