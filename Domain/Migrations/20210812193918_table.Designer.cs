@@ -4,14 +4,16 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Domain.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20210812193918_table")]
+    partial class table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,38 +177,6 @@ namespace Domain.Migrations
                     b.ToTable("ProbnaTabela");
                 });
 
-            modelBuilder.Entity("Domain.Reservation", b =>
-                {
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestaurantTableId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TimeOfTheDay")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Occupied")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ReservationId", "RestaurantId", "RestaurantTableId", "TimeOfTheDay", "Date", "AppUserId");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("RestaurantId", "RestaurantTableId");
-
-                    b.ToTable("Reservation");
-                });
-
             modelBuilder.Entity("Domain.Restaurant", b =>
                 {
                     b.Property<int>("RestaurantId")
@@ -236,11 +206,17 @@ namespace Domain.Migrations
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Ocupied")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Seating")
                         .HasColumnType("int");
 
                     b.Property<int>("TableNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("TimeOfTheDay")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RestaurantTableId", "RestaurantId");
 
@@ -373,33 +349,6 @@ namespace Domain.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("Domain.Reservation", b =>
-                {
-                    b.HasOne("Domain.AppUser", "AppUser")
-                        .WithMany("Reservations")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.RestaurantTable", "RestaurantTable")
-                        .WithMany("Reservations")
-                        .HasForeignKey("RestaurantId", "RestaurantTableId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("Restaurant");
-
-                    b.Navigation("RestaurantTable");
-                });
-
             modelBuilder.Entity("Domain.RestaurantTable", b =>
                 {
                     b.HasOne("Domain.Restaurant", "Restaurant")
@@ -456,19 +405,12 @@ namespace Domain.Migrations
                 {
                     b.Navigation("Likes");
 
-                    b.Navigation("Reservations");
-
                     b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Domain.Restaurant", b =>
                 {
                     b.Navigation("Likes");
-                });
-
-            modelBuilder.Entity("Domain.RestaurantTable", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

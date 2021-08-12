@@ -24,7 +24,8 @@ namespace Data.Implementation
 
         public async Task<Restaurant> GetRestaurantByName(string name)
         {
-            return await context.Restaurant.FirstAsync(x => x.Name == name);
+            var query = context.Restaurant.Include(x => x.Tables);
+            return await query.FirstAsync(x => x.Name == name);
         }
     }
 }

@@ -55,6 +55,12 @@ namespace Domain
      .           WithMany(u => u.Likes)
                 .HasForeignKey(l => l.RestaurantId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Reservation>().HasKey(x => new { x.ReservationId, x.RestaurantId, x.RestaurantTableId, x.TimeOfTheDay, x.Date, x.AppUserId });
+
+            builder.Entity<RestaurantTable>().HasMany(x => x.Reservations).WithOne(x => x.RestaurantTable).HasForeignKey(x => new { x.RestaurantId, x.RestaurantTableId }).OnDelete(DeleteBehavior.NoAction);
+
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -62,5 +68,8 @@ namespace Domain
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;
                                             Database=nadjiMeSto");
         }
+
+
+
     }
 }

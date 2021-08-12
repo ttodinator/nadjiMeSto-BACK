@@ -10,9 +10,9 @@ namespace Domain
     {
         public int RestaurantTableId { get; set; }
         public int TableNumber { get; set; }
-        public bool Ocuupied { get; set; }
         public int Seating { get; set; }
         public Restaurant Restaurant { get; set; }
         public int RestaurantId { get; set; }
+        public List<Reservation> Reservations { get; set; }
     }
 }

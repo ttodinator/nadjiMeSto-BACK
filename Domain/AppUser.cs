@@ -17,7 +17,7 @@ namespace Domain
 
         public List<AppUserRole> UserRoles { get; set; }
         public List<Like> Likes { get; set; }
-
+        public List<Reservation> Reservations { get; set; }
 
 
     }

@@ -13,6 +13,7 @@ namespace Domain
         public string Adress { get; set; }
         public string PhoneNumber { get; set; }
         public List<Like> Likes { get; set; }
+        public List<RestaurantTable> Tables { get; set; }
 
     }
 }
