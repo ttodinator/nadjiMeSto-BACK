@@ -16,6 +16,8 @@ namespace Domain
         public DbSet<Restaurant> Restaurant { get; set; }
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<Proba> ProbnaTabela { get; set; }
+        public DbSet<Like> Likes { get; set; }
+
 
 
 
@@ -41,6 +43,18 @@ namespace Domain
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
+
+            builder.Entity<Like>().HasKey(l => new { l.AppUserId, l.RestaurantId });
+
+            builder.Entity<Like>().HasOne(l => l.AppUser)
+                 .WithMany(u => u.Likes)
+                 .HasForeignKey(l => l.AppUserId)
+                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Like>().HasOne(l => l.Restaurant)
+     .           WithMany(u => u.Likes)
+                .HasForeignKey(l => l.RestaurantId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -16,5 +16,6 @@ namespace API.Dto
         public string CellphoneNumber { get; set; }
 
         public string UserEmail { get; set; }
+        public List<int> Likes { get; set; }
     }
 }

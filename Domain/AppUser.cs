@@ -16,6 +16,8 @@ namespace Domain
         public string CellphoneNumber { get; set; }
 
         public List<AppUserRole> UserRoles { get; set; }
+        public List<Like> Likes { get; set; }
+
 
 
     }

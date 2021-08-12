@@ -44,10 +44,17 @@ namespace API.Controllers
             var roleResult = await userManager.AddToRoleAsync(user, "APPUSER");
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
+            List<int> likes = new List<int>();
+            foreach (Like like in user.Likes)
+            {
+                likes.Add(like.RestaurantId);
+            }
+
             return new UserDto
             {
                 Username = user.UserName,
                 Token = await tokenService.CreateToken(user),
+                Likes=likes
             };
 
         }
@@ -56,6 +63,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Login([FromBody] LoginDto loginDto)
         {
             var user = await userManager.Users
+                .Include(u => u.Likes)
                 //.Include(p => p.Photos) #NE ZABORAVI NA OVAJ DEO SA FOTKAMA I U REPOZITORIJUMU !!!!
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (user == null) return Unauthorized("Invalid username");
@@ -65,11 +73,17 @@ namespace API.Controllers
             var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized();
 
+            List<int> likes = new List<int>();
+            foreach (Like like in user.Likes)
+            {
+                likes.Add(like.RestaurantId);
+            }
+
             return new UserDto
             {
                 Username = user.UserName,
                 Token = await tokenService.CreateToken(user),
-
+                Likes=likes
             };
         }
 

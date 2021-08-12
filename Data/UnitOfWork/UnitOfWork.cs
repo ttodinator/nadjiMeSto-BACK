@@ -1,4 +1,5 @@
-﻿using Data.Definition;
+﻿using AutoMapper;
+using Data.Definition;
 using Data.Implementation;
 using Domain;
 using System;
@@ -12,15 +13,17 @@ namespace Data.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private Context context;
+        private IMapper mapper;
 
-        public UnitOfWork(Context context)
+        public UnitOfWork(Context context, IMapper mapper)
         {
             this.context = context;
-
+            this.mapper = mapper;
         }
 
         public IRepositoryRestaurant RepositoryRestaurant => new RepositoryRestaurant(context);
 
+        public IRepositoryUser RepositoryUser => new RepositoryUser(context,mapper);
         public async Task<bool> Complete()
         {
             return await context.SaveChangesAsync() > 0;
