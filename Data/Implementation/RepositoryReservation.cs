@@ -17,9 +17,19 @@ namespace Data.Implementation
             this.context = context;
         }
 
+        public Task<int> GenerateTableId(int restaurantId, string timeOfTheDay, DateTime date, int seating, bool occupied)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Reservation>> GetAll()
         {
             return await context.Reservation.Include(x => x.RestaurantTable).ToListAsync();
+        }
+
+        public async Task<int> GetMaxid()
+        {
+            return await context.Reservation.MaxAsync(x => x.ReservationId);
         }
 
         public async Task<int> GetReservedTablesCount(int restaurantId, string timeOfTheDay, DateTime date, int seating, bool occupied)
@@ -34,6 +44,11 @@ namespace Data.Implementation
         public Task<bool> Reserve()
         {
             throw new NotImplementedException();
+        }
+
+        public void Save(Reservation reservation)
+        {
+            context.Reservation.Add(reservation);
         }
     }
 }

@@ -43,5 +43,13 @@ namespace Data.Implementation
         {
             return await context.RestaurantTable.Where(x => x.RestaurantId == restaurantId && x.Seating == seating).CountAsync();
         }
+
+        public async Task<int> GetMaxId(int restaurantId)
+        {
+            return await context.RestaurantTable.Where(x => x.RestaurantId == restaurantId).MaxAsync(x => x.RestaurantTableId);
+
+            //return await context.RestaurantTable.OrderByDescending(u => u.RestaurantTableId).FirstOrDefaultAsync();
+        }
+
     }
 }

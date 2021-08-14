@@ -33,15 +33,23 @@ namespace API.Controllers
         }
 
         [HttpGet("filter/{restaurantId}")]
-        public async Task<ActionResult<List<RestaurantTable>>> GetFilteredTables(int restaurantId)
+        public async Task<ActionResult<List<int>>> GetFilteredTables(int restaurantId)
         {
-            return await unitOfWork.RepositoryRestaurant.FilterTables(restaurantId);
+            var distTables= await unitOfWork.RepositoryRestaurant.FilterTables(restaurantId);
+            List<RestaurantTable> distTablesList = distTables.ToList();
+            List<int> listOfTableSeatings = new List<int>();
+            foreach (RestaurantTable item in distTablesList)
+            {
+                listOfTableSeatings.Add(item.Seating);
+            }
+
+             return Ok(listOfTableSeatings);
         }
 
-        [HttpGet("aaa")]
-        public async Task<ActionResult<int>> GetFilteredTablesaa()
+        [HttpGet("count-tables")]
+        public async Task<ActionResult<int>> GetFilteredTablesaa(CountTablesDto dto)
         {
-            return await unitOfWork.RepositoryRestaurant.GetTablesCount(1, 5);
+            return await unitOfWork.RepositoryRestaurant.GetTablesCount(dto.RestaurantId,dto.Seating);
         }
     }
 }

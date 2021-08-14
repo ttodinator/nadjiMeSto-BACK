@@ -10,6 +10,7 @@ namespace Data.Definition
     public interface IRepositoryRestaurant
     {
         Task<List<Restaurant>> GetAll();
+        Task<int> GetMaxId(int restaurantId);
         Task<int> GetTablesCount(int restaurantId,int seating);
         Task<Restaurant> GetRestaurantByName(string name);
         Task<List<RestaurantTable>> FilterTables(int restaurantId);

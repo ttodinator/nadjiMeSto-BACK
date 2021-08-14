@@ -9,9 +9,12 @@ namespace Data.Definition
 {
     public interface IRepositoryReservation
     {
+        Task<int> GetMaxid();
         Task<List<Reservation>> GetAll();
         Task<int> GetReservedTablesCount(int restaurantId, string timeOfTheDay, DateTime date, int seating,bool occupied);
 
+        Task<int> GenerateTableId(int restaurantId, string timeOfTheDay, DateTime date, int seating, bool occupied);
+        void Save(Reservation reservation);
         Task<bool> Reserve();
     }
 }
