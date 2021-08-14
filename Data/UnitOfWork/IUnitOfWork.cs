@@ -11,6 +11,8 @@ namespace Data.UnitOfWork
     {
         public IRepositoryRestaurant RepositoryRestaurant { get;  }
         public IRepositoryUser RepositoryUser { get; }
+        public IRepositoryReservation RepositoryReservation { get; }
+
         Task<bool> Complete();
         bool HasChanged();
     }

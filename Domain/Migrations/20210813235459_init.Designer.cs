@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210804153858_kjdhjkd")]
-    partial class kjdhjkd
+    [Migration("20210813235459_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,6 +59,9 @@ namespace Domain.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("CellphoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -109,6 +112,9 @@ namespace Domain.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -141,6 +147,21 @@ namespace Domain.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
+            modelBuilder.Entity("Domain.Like", b =>
+                {
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "RestaurantId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("Domain.Proba", b =>
                 {
                     b.Property<int>("Id")
@@ -154,6 +175,40 @@ namespace Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProbnaTabela");
+                });
+
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantTableId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeOfTheDay")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Occupied")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ReservationId", "RestaurantId", "RestaurantTableId", "TimeOfTheDay", "Date", "AppUserId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("RestaurantTableId", "RestaurantId");
+
+                    b.ToTable("Reservation");
                 });
 
             modelBuilder.Entity("Domain.Restaurant", b =>
@@ -184,9 +239,6 @@ namespace Domain.Migrations
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Ocuupied")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Seating")
                         .HasColumnType("int");
@@ -306,10 +358,56 @@ namespace Domain.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Like", b =>
+                {
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("Likes")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Restaurant", "Restaurant")
+                        .WithMany("Likes")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany("Reservations")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.RestaurantTable", "RestaurantTable")
+                        .WithMany("Reservations")
+                        .HasForeignKey("RestaurantTableId", "RestaurantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("RestaurantTable");
+                });
+
             modelBuilder.Entity("Domain.RestaurantTable", b =>
                 {
                     b.HasOne("Domain.Restaurant", "Restaurant")
-                        .WithMany()
+                        .WithMany("Tables")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -360,7 +458,23 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
+                    b.Navigation("Likes");
+
+                    b.Navigation("Reservations");
+
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Domain.Restaurant", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("Domain.RestaurantTable", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

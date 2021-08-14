@@ -14,6 +14,10 @@ namespace Domain
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DbSet<Restaurant> Restaurant { get; set; }
+        public DbSet<Reservation> Reservation { get; set; }
+
+        public DbSet<RestaurantTable> RestaurantTable { get; set; }
+
         public DbSet<AppUser> AppUser { get; set; }
         public DbSet<Proba> ProbnaTabela { get; set; }
         public DbSet<Like> Likes { get; set; }
@@ -31,6 +35,7 @@ namespace Domain
             base.OnModelCreating(builder);
 
             builder.Entity<RestaurantTable>().HasKey(k => new { k.RestaurantTableId, k.RestaurantId });
+            //builder.Entity<Restaurant>().HasMany(x => x.Tables).WithOne(x => x.Restaurant);
 
             builder.Entity<AppUser>()
                 .HasMany(ur => ur.UserRoles)
@@ -58,8 +63,7 @@ namespace Domain
 
             builder.Entity<Reservation>().HasKey(x => new { x.ReservationId, x.RestaurantId, x.RestaurantTableId, x.TimeOfTheDay, x.Date, x.AppUserId });
 
-            builder.Entity<RestaurantTable>().HasMany(x => x.Reservations).WithOne(x => x.RestaurantTable).HasForeignKey(x => new { x.RestaurantId, x.RestaurantTableId }).OnDelete(DeleteBehavior.NoAction);
-
+            builder.Entity<RestaurantTable>().HasMany(x => x.Reservations).WithOne(x => x.RestaurantTable).HasForeignKey(x => new { x.RestaurantTableId,x.RestaurantId }).OnDelete(DeleteBehavior.NoAction);
 
         }
 

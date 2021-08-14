@@ -22,7 +22,7 @@ namespace Data.UnitOfWork
         }
 
         public IRepositoryRestaurant RepositoryRestaurant => new RepositoryRestaurant(context);
-
+        public IRepositoryReservation RepositoryReservation => new RepositoryReservation(context);
         public IRepositoryUser RepositoryUser => new RepositoryUser(context,mapper);
         public async Task<bool> Complete()
         {

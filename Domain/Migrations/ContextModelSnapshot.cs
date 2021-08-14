@@ -202,7 +202,9 @@ namespace Domain.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("RestaurantId", "RestaurantTableId");
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("RestaurantTableId", "RestaurantId");
 
                     b.ToTable("Reservation");
                 });
@@ -389,7 +391,7 @@ namespace Domain.Migrations
 
                     b.HasOne("Domain.RestaurantTable", "RestaurantTable")
                         .WithMany("Reservations")
-                        .HasForeignKey("RestaurantId", "RestaurantTableId")
+                        .HasForeignKey("RestaurantTableId", "RestaurantId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -403,7 +405,7 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.RestaurantTable", b =>
                 {
                     b.HasOne("Domain.Restaurant", "Restaurant")
-                        .WithMany()
+                        .WithMany("Tables")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -464,6 +466,8 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Restaurant", b =>
                 {
                     b.Navigation("Likes");
+
+                    b.Navigation("Tables");
                 });
 
             modelBuilder.Entity("Domain.RestaurantTable", b =>

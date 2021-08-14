@@ -1,4 +1,6 @@
-﻿using Data.UnitOfWork;
+﻿using API.Dto;
+using API.Extensions;
+using Data.UnitOfWork;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,5 +32,16 @@ namespace API.Controllers
             return await unitOfWork.RepositoryRestaurant.GetRestaurantByName(name);
         }
 
+        [HttpGet("filter/{restaurantId}")]
+        public async Task<ActionResult<List<RestaurantTable>>> GetFilteredTables(int restaurantId)
+        {
+            return await unitOfWork.RepositoryRestaurant.FilterTables(restaurantId);
+        }
+
+        [HttpGet("aaa")]
+        public async Task<ActionResult<int>> GetFilteredTablesaa()
+        {
+            return await unitOfWork.RepositoryRestaurant.GetTablesCount(1, 5);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Data.Definition;
+using Data.ExtensionsData;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +18,16 @@ namespace Data.Implementation
             this.context = context;
         }
 
+        public async Task<List<RestaurantTable>> FilterTables(int restaurantId)
+        {
+            var query = context.RestaurantTable.Where(x => x.RestaurantId == restaurantId ).AsQueryable();
+            List<RestaurantTable> lista = await query.ToListAsync();
+            var a = lista.DistinctBy(x => x.Seating).ToList();
+
+            return a.ToList();
+        }
+
+
         public async Task<List<Restaurant>> GetAll()
         {
             return await context.Restaurant.ToListAsync();
@@ -26,6 +37,11 @@ namespace Data.Implementation
         {
             var query = context.Restaurant.Include(x => x.Tables);
             return await query.FirstAsync(x => x.Name == name);
+        }
+
+        public async Task<int> GetTablesCount(int restaurantId, int seating)
+        {
+            return await context.RestaurantTable.Where(x => x.RestaurantId == restaurantId && x.Seating == seating).CountAsync();
         }
     }
 }

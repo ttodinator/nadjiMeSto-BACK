@@ -31,6 +31,8 @@ namespace Domain.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CellphoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -49,6 +51,19 @@ namespace Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProbnaTabela",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProbnaTabela", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,13 +188,34 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Likes",
+                columns: table => new
+                {
+                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => new { x.AppUserId, x.RestaurantId });
+                    table.ForeignKey(
+                        name: "FK_Likes_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Likes_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "RestaurantId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RestaurantTable",
                 columns: table => new
                 {
                     RestaurantTableId = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
                     TableNumber = table.Column<int>(type: "int", nullable: false),
-                    Ocuupied = table.Column<bool>(type: "bit", nullable: false),
                     Seating = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -191,6 +227,40 @@ namespace Domain.Migrations
                         principalTable: "Restaurant",
                         principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservation",
+                columns: table => new
+                {
+                    ReservationId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantTableId = table.Column<int>(type: "int", nullable: false),
+                    TimeOfTheDay = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Occupied = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservation", x => new { x.ReservationId, x.RestaurantId, x.RestaurantTableId, x.TimeOfTheDay, x.Date, x.AppUserId });
+                    table.ForeignKey(
+                        name: "FK_Reservation_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservation_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservation_RestaurantTable_RestaurantTableId_RestaurantId",
+                        columns: x => new { x.RestaurantTableId, x.RestaurantId },
+                        principalTable: "RestaurantTable",
+                        principalColumns: new[] { "RestaurantTableId", "RestaurantId" });
                 });
 
             migrationBuilder.CreateIndex(
@@ -233,6 +303,26 @@ namespace Domain.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Likes_RestaurantId",
+                table: "Likes",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservation_AppUserId",
+                table: "Reservation",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservation_RestaurantId",
+                table: "Reservation",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservation_RestaurantTableId_RestaurantId",
+                table: "Reservation",
+                columns: new[] { "RestaurantTableId", "RestaurantId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RestaurantTable_RestaurantId",
                 table: "RestaurantTable",
                 column: "RestaurantId");
@@ -256,13 +346,22 @@ namespace Domain.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "RestaurantTable");
+                name: "Likes");
+
+            migrationBuilder.DropTable(
+                name: "ProbnaTabela");
+
+            migrationBuilder.DropTable(
+                name: "Reservation");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "RestaurantTable");
 
             migrationBuilder.DropTable(
                 name: "Restaurant");
