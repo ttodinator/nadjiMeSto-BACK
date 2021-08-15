@@ -14,8 +14,10 @@ namespace API.Dto
         public DateTime DateOfBirth { get; set; }
 
         public string CellphoneNumber { get; set; }
+        public string ProfilePhotoUrl { get; set; }
 
         public string UserEmail { get; set; }
+        public string MyProperty { get; set; }
         public List<int> Likes { get; set; }
     }
 }

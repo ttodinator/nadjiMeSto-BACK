@@ -14,6 +14,7 @@ namespace Domain
         public DateTime DateOfBirth { get; set; }
         public string UserEmail { get; set; }
         public string CellphoneNumber { get; set; }
+        public string ProfilePhotoUrl { get; set; }
 
         public List<AppUserRole> UserRoles { get; set; }
         public List<Like> Likes { get; set; }

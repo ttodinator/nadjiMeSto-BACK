@@ -32,6 +32,11 @@ namespace Data.Implementation
             return l;
         }
 
+        public async Task<AppUser> GetUser(int id)
+        {
+            return await context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        }
+
         public async Task<AppUser> GetUserWithLikesAsync(int id)
         {
             return await context.Users.Where(u=>u.Id==id).Include(u => u.Likes).FirstOrDefaultAsync();

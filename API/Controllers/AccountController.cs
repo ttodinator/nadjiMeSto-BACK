@@ -79,9 +79,11 @@ namespace API.Controllers
                 likes.Add(like.RestaurantId);
             }
 
+
             return new UserDto
             {
                 Username = user.UserName,
+                ProfilePhotoUrl=user.ProfilePhotoUrl,
                 Token = await tokenService.CreateToken(user),
                 Likes=likes
             };
