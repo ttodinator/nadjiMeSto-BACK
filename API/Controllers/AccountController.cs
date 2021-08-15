@@ -45,10 +45,7 @@ namespace API.Controllers
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
             List<int> likes = new List<int>();
-            foreach (Like like in user.Likes)
-            {
-                likes.Add(like.RestaurantId);
-            }
+
 
             return new UserDto
             {
