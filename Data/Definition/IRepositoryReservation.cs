@@ -16,5 +16,6 @@ namespace Data.Definition
         Task<int> GenerateTableId(int restaurantId, string timeOfTheDay, DateTime date, int seating, bool occupied);
         void Save(Reservation reservation);
         Task<bool> Reserve();
+        Task<List<Reservation>> GetReservationsForUser(int id);
     }
 }

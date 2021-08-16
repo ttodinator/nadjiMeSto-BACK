@@ -14,5 +14,6 @@ namespace Data.Definition
         Task<int> GetTablesCount(int restaurantId,int seating);
         Task<Restaurant> GetRestaurantByName(string name);
         Task<List<RestaurantTable>> FilterTables(int restaurantId);
+        Task<List<Restaurant>> GetAllLikedRestaurantsByUser(int id);
     }
 }

@@ -24,10 +24,12 @@ namespace API.Controllers
             return await unitOfWork.RepositoryReservation.GetReservedTablesCount(dto.re);
         }*/
 
-        [HttpGet("aaa")]
-        public async Task<List<Reservation>> ccc()
+        [HttpGet]
+        public async Task<List<Reservation>> ccc(int userId)
         {
-            return await unitOfWork.RepositoryReservation.GetAll();
+            var Id = User.GetUserId();
+            return await unitOfWork.RepositoryReservation.GetReservationsForUser(Id);
+
         }
 
         [HttpPost]
@@ -43,6 +45,7 @@ namespace API.Controllers
                 Reservation reservation = new Reservation
                 {
                     RestaurantId = dto.RestaurantId,
+                    RestaurantName=dto.RestaurantName,
                     RestaurantTableId = reservedTablesCount+1,
                     ReservationId = await unitOfWork.RepositoryReservation.GetMaxid() + 1,
                     AppUserId = userId,

@@ -32,6 +32,13 @@ namespace Data.Implementation
             return await context.Reservation.MaxAsync(x => x.ReservationId);
         }
 
+        public async Task<List<Reservation>> GetReservationsForUser(int id)
+        {
+            var query =  context.Reservation.Include(x=>x.RestaurantTable).AsQueryable();
+            query = query.Where(x => x.AppUserId == id);
+            return await query.ToListAsync();
+        }
+
         public async Task<int> GetReservedTablesCount(int restaurantId, string timeOfTheDay, DateTime date, int seating, bool occupied)
         {
             var query = context.Reservation.Include(x => x.RestaurantTable).ThenInclude(x=>x.Restaurant).AsQueryable();
@@ -40,6 +47,7 @@ namespace Data.Implementation
                     && x.RestaurantTable.Seating == seating && x.Occupied == occupied
                 ).CountAsync();
         }
+
 
         public Task<bool> Reserve()
         {

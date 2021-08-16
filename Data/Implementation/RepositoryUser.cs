@@ -32,14 +32,28 @@ namespace Data.Implementation
             return l;
         }
 
+        public async Task<AppUser> GetReservationForUser(int id)
+        {
+            return await context.Users.Where(u => u.Id == id).Include(u => u.Reservations).FirstOrDefaultAsync();
+
+        }
+
         public async Task<AppUser> GetUser(int id)
         {
             return await context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
 
+
         public async Task<AppUser> GetUserWithLikesAsync(int id)
         {
             return await context.Users.Where(u=>u.Id==id).Include(u => u.Likes).FirstOrDefaultAsync();
         }
+
+        public void UpdateProfilePhoto(AppUser user)
+        {
+            context.Entry(user).State = EntityState.Modified;
+        }
+
+
     }
 }

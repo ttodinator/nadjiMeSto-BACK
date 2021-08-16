@@ -51,5 +51,9 @@ namespace Data.Implementation
             //return await context.RestaurantTable.OrderByDescending(u => u.RestaurantTableId).FirstOrDefaultAsync();
         }
 
+        public Task<List<Restaurant>> GetAllLikedRestaurantsByUser(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

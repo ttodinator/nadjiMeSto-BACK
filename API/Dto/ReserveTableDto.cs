@@ -11,5 +11,6 @@ namespace API.Dto
         public int Seating { get; set; }
         public DateTime Date { get; set; }
         public string TimeOfTheDay { get; set; }
+        public string RestaurantName { get; set; }
     }
 }

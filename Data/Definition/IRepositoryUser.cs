@@ -11,6 +11,8 @@ namespace Data.Definition
     {
         Task<AppUser> GetUserWithLikesAsync(int id);
         Task<AppUser> GetUser(int id);
+        public void UpdateProfilePhoto(AppUser user);
+        Task<AppUser> GetReservationForUser(int id);
 
         Like GetLike(int i, int j);
 
