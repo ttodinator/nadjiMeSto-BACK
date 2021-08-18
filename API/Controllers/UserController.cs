@@ -24,6 +24,22 @@ namespace API.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("get-user")]
+        public async Task<ActionResult<UserDto>> GetUser()
+        {
+            var userId = User.GetUserId();
+
+            AppUser user= await unitOfWork.RepositoryUser.GetUserWithLikesAsync(userId);
+            return  new UserDto
+            {
+                CellphoneNumber = user.CellphoneNumber,
+                UserEmail = user.UserEmail,
+                Name=user.Name,
+                Surname=user.Surname,
+                Username=user.UserName,
+            };
+        }
+
         [HttpPost("like/{restaurantId}")]
         public async Task<ActionResult> UserLikes(int restaurantId)
         {

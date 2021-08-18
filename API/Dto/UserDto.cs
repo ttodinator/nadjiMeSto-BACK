@@ -17,7 +17,6 @@ namespace API.Dto
         public string ProfilePhotoUrl { get; set; }
 
         public string UserEmail { get; set; }
-        public string MyProperty { get; set; }
         public List<int> Likes { get; set; }
     }
 }

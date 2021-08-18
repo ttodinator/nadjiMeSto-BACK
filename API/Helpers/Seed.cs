@@ -29,8 +29,17 @@ namespace API.Helpers
                 UserName = "admin"
             };
 
+            var restaurant = new AppUser
+            {
+                UserName = "Durmitor"
+
+            };
+
             await userManager.CreateAsync(admin, "Pa$$w0rd");
+            await userManager.CreateAsync(restaurant, "Pa$$w0rd");
+            await userManager.AddToRolesAsync(restaurant, new[] { "Restaurant" });
             await userManager.AddToRolesAsync(admin, new[] { "Admin", "Restaurant" });
+
 
         }
     }

@@ -32,6 +32,7 @@ namespace API.Controllers
             return await unitOfWork.RepositoryRestaurant.GetRestaurantByName(name);
         }
 
+
         [HttpGet("filter/{restaurantId}")]
         public async Task<ActionResult<List<int>>> GetFilteredTables(int restaurantId)
         {
