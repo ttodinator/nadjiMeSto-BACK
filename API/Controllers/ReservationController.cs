@@ -32,6 +32,15 @@ namespace API.Controllers
 
         }
 
+        [HttpGet("daily")]
+        public async Task<List<Reservation>> GetAllDailyReservations(SearchReservationsDailyDto dto)
+        {
+            var Id = User.GetUserId();
+
+            return await unitOfWork.RepositoryReservation.GetAllDailyReservation(dto.RestaurantId,dto.Date);
+
+        }
+
         [HttpPost]
         public async Task<ActionResult<Reservation>> Reserve(ReserveTableDto dto)
         {

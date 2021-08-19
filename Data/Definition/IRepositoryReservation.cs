@@ -11,6 +11,7 @@ namespace Data.Definition
     {
         Task<int> GetMaxid();
         Task<List<Reservation>> GetAll();
+        Task<List<Reservation>> GetAllDailyReservation(int restaurantId, DateTime date);
         Task<int> GetReservedTablesCount(int restaurantId, string timeOfTheDay, DateTime date, int seating,bool occupied);
 
         Task<int> GenerateTableId(int restaurantId, string timeOfTheDay, DateTime date, int seating, bool occupied);

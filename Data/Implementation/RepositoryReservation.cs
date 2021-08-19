@@ -27,6 +27,12 @@ namespace Data.Implementation
             return await context.Reservation.Include(x => x.RestaurantTable).ToListAsync();
         }
 
+        public async Task<List<Reservation>> GetAllDailyReservation(int restaurantId, DateTime date)
+        {
+            return await context.Reservation.Where(x => x.RestaurantId == restaurantId && x.Date==date).ToListAsync();
+
+        }
+
         public async Task<int> GetMaxid()
         {
             return await context.Reservation.MaxAsync(x => x.ReservationId);
