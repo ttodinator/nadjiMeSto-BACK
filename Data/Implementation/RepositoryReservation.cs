@@ -35,7 +35,15 @@ namespace Data.Implementation
 
         public async Task<int> GetMaxid()
         {
-            return await context.Reservation.MaxAsync(x => x.ReservationId);
+            try
+            {
+                return await context.Reservation.MaxAsync(x => x.ReservationId);
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
         }
 
         public async Task<List<Reservation>> GetReservationsForUser(int id)

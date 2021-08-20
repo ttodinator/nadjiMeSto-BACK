@@ -49,6 +49,7 @@ namespace API.Controllers
                 dto.RestaurantId, dto.TimeOfTheDay, dto.Date, dto.Seating,true);
             int m = maxTableCount - reservedTablesCount;
             var userId = User.GetUserId();
+            var x = await unitOfWork.RepositoryReservation.GetMaxid() + 1;
             if (m > 0)
             {
                 Reservation reservation = new Reservation
@@ -56,7 +57,7 @@ namespace API.Controllers
                     RestaurantId = dto.RestaurantId,
                     RestaurantName=dto.RestaurantName,
                     RestaurantTableId = reservedTablesCount+1,
-                    ReservationId = await unitOfWork.RepositoryReservation.GetMaxid() + 1,
+                    ReservationId = x,
                     AppUserId = userId,
                     TimeOfTheDay = dto.TimeOfTheDay,
                     Date = dto.Date,

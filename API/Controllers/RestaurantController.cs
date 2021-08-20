@@ -77,6 +77,10 @@ namespace API.Controllers
                     }
 
                     int numberOfPhotos = Directory.GetFiles(path + restaurantName).Length + 1;
+                    if (numberOfPhotos == 6)
+                    {
+                        return BadRequest();
+                    }
                     string[] splits = file.FileName.Split('.');
                     string imgFormat = splits[splits.Length - 1];
                     string profilePhotoUrl = path + restaurantName + @"\" + numberOfPhotos + "." + imgFormat;
@@ -118,6 +122,34 @@ namespace API.Controllers
             }
             return BadRequest();
         }
-        
+
+        [HttpPut("{PhotoNumber}")]
+        public async Task<ActionResult> ChangeProfilePhoto(string PhotoNumber)
+        {
+            if (PhotoNumber == null || PhotoNumber == "" ) return BadRequest();
+
+            var userId = User.GetUserId();
+            AppUser user = await unitOfWork.RepositoryUser.GetUser(userId);
+            string restaurantName = char.ToUpper(user.UserName[0]) + user.UserName.Substring(1);
+            Restaurant restaurant = await unitOfWork.RepositoryRestaurant.GetRestaurantByName(restaurantName);
+            RestaurantPhoto photo = restaurant.Photos.Where(x => x.IsMain == true).FirstOrDefault();
+            photo.IsMain = false;
+            foreach (var item in restaurant.Photos)
+            {
+                string[] splits = item.Url.Split('.');
+                string number = splits[0].Substring(splits[0].Length-1);
+
+                if (number == PhotoNumber)
+                {
+                    item.IsMain = true;
+                    break;
+                }
+            }
+            if (await unitOfWork.Complete()) return NoContent();
+
+            return BadRequest();
+
+        }
+
     }
 }
