@@ -236,6 +236,29 @@ namespace Domain.Migrations
                     b.ToTable("Restaurant");
                 });
 
+            modelBuilder.Entity("Domain.RestaurantPhoto", b =>
+                {
+                    b.Property<int>("RestaurantPhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RestaurantPhotoId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("RestaurantPhoto");
+                });
+
             modelBuilder.Entity("Domain.RestaurantTable", b =>
                 {
                     b.Property<int>("RestaurantTableId")
@@ -408,6 +431,17 @@ namespace Domain.Migrations
                     b.Navigation("RestaurantTable");
                 });
 
+            modelBuilder.Entity("Domain.RestaurantPhoto", b =>
+                {
+                    b.HasOne("Domain.Restaurant", "Restaurant")
+                        .WithMany("Photos")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("Domain.RestaurantTable", b =>
                 {
                     b.HasOne("Domain.Restaurant", "Restaurant")
@@ -472,6 +506,8 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Restaurant", b =>
                 {
                     b.Navigation("Likes");
+
+                    b.Navigation("Photos");
 
                     b.Navigation("Tables");
                 });

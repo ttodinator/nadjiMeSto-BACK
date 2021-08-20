@@ -33,11 +33,11 @@ namespace API.Controllers
         }
 
         [HttpGet("daily")]
-        public async Task<List<Reservation>> GetAllDailyReservations(SearchReservationsDailyDto dto)
+        public async Task<List<Reservation>> GetAllDailyReservations([FromQuery] int restaurantId,[FromQuery] DateTime date)
         {
             var Id = User.GetUserId();
 
-            return await unitOfWork.RepositoryReservation.GetAllDailyReservation(dto.RestaurantId,dto.Date);
+            return await unitOfWork.RepositoryReservation.GetAllDailyReservation(restaurantId,date);
 
         }
 

@@ -30,12 +30,12 @@ namespace Data.Implementation
 
         public async Task<List<Restaurant>> GetAll()
         {
-            return await context.Restaurant.ToListAsync();
+            return await context.Restaurant.Include(x=>x.Photos).ToListAsync();
         }
 
         public async Task<Restaurant> GetRestaurantByName(string name)
         {
-            var query = context.Restaurant.Include(x => x.Tables);
+            var query = context.Restaurant.Include(x => x.Tables).Include(x => x.Photos);
             return await query.FirstAsync(x => x.Name == name);
         }
 

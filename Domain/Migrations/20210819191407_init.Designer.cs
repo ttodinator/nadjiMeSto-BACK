@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210813235459_init")]
+    [Migration("20210819191407_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,9 @@ namespace Domain.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfilePhotoUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -200,6 +203,9 @@ namespace Domain.Migrations
                     b.Property<bool>("Occupied")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RestaurantName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ReservationId", "RestaurantId", "RestaurantTableId", "TimeOfTheDay", "Date", "AppUserId");
 
                     b.HasIndex("AppUserId");
@@ -230,6 +236,29 @@ namespace Domain.Migrations
                     b.HasKey("RestaurantId");
 
                     b.ToTable("Restaurant");
+                });
+
+            modelBuilder.Entity("Domain.RestaurantPhoto", b =>
+                {
+                    b.Property<int>("RestaurantPhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RestaurantPhotoId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("RestaurantPhoto");
                 });
 
             modelBuilder.Entity("Domain.RestaurantTable", b =>
@@ -404,6 +433,17 @@ namespace Domain.Migrations
                     b.Navigation("RestaurantTable");
                 });
 
+            modelBuilder.Entity("Domain.RestaurantPhoto", b =>
+                {
+                    b.HasOne("Domain.Restaurant", "Restaurant")
+                        .WithMany("Photos")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("Domain.RestaurantTable", b =>
                 {
                     b.HasOne("Domain.Restaurant", "Restaurant")
@@ -468,6 +508,8 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Restaurant", b =>
                 {
                     b.Navigation("Likes");
+
+                    b.Navigation("Photos");
 
                     b.Navigation("Tables");
                 });

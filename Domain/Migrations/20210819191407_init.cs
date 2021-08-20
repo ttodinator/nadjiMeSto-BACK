@@ -33,6 +33,7 @@ namespace Domain.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CellphoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -210,6 +211,27 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RestaurantPhoto",
+                columns: table => new
+                {
+                    RestaurantPhotoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsMain = table.Column<bool>(type: "bit", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantPhoto", x => x.RestaurantPhotoId);
+                    table.ForeignKey(
+                        name: "FK_RestaurantPhoto_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RestaurantTable",
                 columns: table => new
                 {
@@ -239,6 +261,7 @@ namespace Domain.Migrations
                     RestaurantTableId = table.Column<int>(type: "int", nullable: false),
                     TimeOfTheDay = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RestaurantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Occupied = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -323,6 +346,11 @@ namespace Domain.Migrations
                 columns: new[] { "RestaurantTableId", "RestaurantId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_RestaurantPhoto_RestaurantId",
+                table: "RestaurantPhoto",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RestaurantTable_RestaurantId",
                 table: "RestaurantTable",
                 column: "RestaurantId");
@@ -353,6 +381,9 @@ namespace Domain.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reservation");
+
+            migrationBuilder.DropTable(
+                name: "RestaurantPhoto");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
