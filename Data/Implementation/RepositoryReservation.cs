@@ -29,7 +29,7 @@ namespace Data.Implementation
 
         public async Task<List<Reservation>> GetAllDailyReservation(int restaurantId, DateTime date)
         {
-            return await context.Reservation.Where(x => x.RestaurantId == restaurantId && x.Date==date).ToListAsync();
+            return await context.Reservation.Where(x => x.RestaurantId == restaurantId && x.Date==date).Include(x=>x.RestaurantTable).Include(x => x.AppUser).ToListAsync();
 
         }
 

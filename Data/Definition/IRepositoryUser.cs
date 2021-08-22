@@ -17,5 +17,6 @@ namespace Data.Definition
         Like GetLike(int i, int j);
 
         void DeleteLike(Like l);
+        void Update(AppUser user);
     }
 }

@@ -3,6 +3,7 @@ using API.Extensions;
 using AutoMapper;
 using Data.UnitOfWork;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    [Authorize(Policy = "RequireUserRole")]
     public class UserController:BaseApiController
     {
         IUnitOfWork unitOfWork;
@@ -134,6 +136,23 @@ namespace API.Controllers
                 Username = user.UserName,
                 ProfilePhotoUrl = user.ProfilePhotoUrl
             };
+        }
+
+
+        [HttpPut("update")]
+        public async Task<ActionResult> UpdateProfile(EditUserDto dto)
+        {
+            var userId = User.GetUserId();
+            AppUser user = await unitOfWork.RepositoryUser.GetUser(userId);
+            user.UserEmail = dto.UserEmail;
+            user.UserName = dto.Username;
+            user.Name = dto.Name;
+            user.Surname = dto.Surname;
+            user.CellphoneNumber = dto.CellPhoneNumber;
+            unitOfWork.RepositoryUser.Update(user);
+            if (await unitOfWork.Complete()) return Ok();
+            return BadRequest();
+
         }
 
     }

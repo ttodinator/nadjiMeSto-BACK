@@ -75,8 +75,9 @@ namespace API
 
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("ADMIN"));
-                opt.AddPolicy("RequireAdminOrModeratorRole", policy => policy.RequireRole("ADMIN", "RESTAURANT"));
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("RequireUserRole", policy => policy.RequireRole("AppUser"));
+                opt.AddPolicy("RequireRestaurantRole", policy => policy.RequireRole("Restaurant"));
             });
 
             services.AddCors();

@@ -2,6 +2,7 @@
 using API.Extensions;
 using Data.UnitOfWork;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class ReservationController:BaseApiController
     {
         private IUnitOfWork unitOfWork;
@@ -32,6 +34,7 @@ namespace API.Controllers
 
         }
 
+        [Authorize(Policy = "RequireRestaurantRole")]
         [HttpGet("daily")]
         public async Task<List<Reservation>> GetAllDailyReservations([FromQuery] int restaurantId,[FromQuery] DateTime date)
         {

@@ -15,5 +15,8 @@ namespace Data.Definition
         Task<Restaurant> GetRestaurantByName(string name);
         Task<List<RestaurantTable>> FilterTables(int restaurantId);
         Task<List<Restaurant>> GetAllLikedRestaurantsByUser(int id);
+
+        Task<int> GetMaxTableId();
+        void Save(Restaurant restaurant);
     }
 }

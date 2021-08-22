@@ -49,6 +49,11 @@ namespace Data.Implementation
             return await context.Users.Where(u=>u.Id==id).Include(u => u.Likes).FirstOrDefaultAsync();
         }
 
+        public void Update(AppUser user)
+        {
+            context.Entry(user).State = EntityState.Modified;
+        }
+
         public void UpdateProfilePhoto(AppUser user)
         {
             context.Entry(user).State = EntityState.Modified;

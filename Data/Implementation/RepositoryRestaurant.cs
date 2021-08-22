@@ -55,5 +55,23 @@ namespace Data.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public async Task<int> GetMaxTableId()
+        {
+            try
+            {
+                return await context.RestaurantTable.MaxAsync(x => x.RestaurantTableId);
+            }
+            catch (Exception)
+            {
+
+                return 0;
+            }
+        }
+
+        public void Save(Restaurant restaurant)
+        {
+            context.Add(restaurant);
+        }
     }
 }
