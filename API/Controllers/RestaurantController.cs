@@ -201,7 +201,8 @@ namespace API.Controllers
                 {
                     Adress = dto.Adress,
                     Name = dto.Name,
-                    PhoneNumber = dto.PhoneNumber
+                    PhoneNumber = dto.PhoneNumber,
+                    Description=dto.Description
                 };
                 int maxTableId = await unitOfWork.RepositoryRestaurant.GetMaxTableId() + 1;
                 int tableNumber = 1;

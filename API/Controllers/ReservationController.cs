@@ -39,8 +39,9 @@ namespace API.Controllers
         public async Task<List<Reservation>> GetAllDailyReservations([FromQuery] int restaurantId,[FromQuery] DateTime date)
         {
             var Id = User.GetUserId();
-
-            return await unitOfWork.RepositoryReservation.GetAllDailyReservation(restaurantId,date);
+            AppUser user = await unitOfWork.RepositoryUser.GetUser(Id);
+            Restaurant restaurant = await unitOfWork.RepositoryRestaurant.GetRestaurantByNameToLowe(user.UserName);
+            return await unitOfWork.RepositoryReservation.GetAllDailyReservation(restaurant.RestaurantId,date);
 
         }
 

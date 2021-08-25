@@ -18,6 +18,7 @@ namespace API.Dto
         public int SeatingFor8 { get; set; }
         public int SeatingFor10 { get; set; }
         public int SeatingFor12 { get; set; }
+        public string Description { get; set; }
 
 
 

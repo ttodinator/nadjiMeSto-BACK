@@ -57,7 +57,7 @@ namespace Data.Implementation
         {
             var query = context.Reservation.Include(x => x.RestaurantTable).ThenInclude(x=>x.Restaurant).AsQueryable();
             return await query.Where(
-                x => x.Date == date && x.TimeOfTheDay == timeOfTheDay && x.RestaurantId == restaurantId
+                x => x.Date.Date == date.Date && x.TimeOfTheDay == timeOfTheDay && x.RestaurantId == restaurantId
                     && x.RestaurantTable.Seating == seating && x.Occupied == occupied
                 ).CountAsync();
         }

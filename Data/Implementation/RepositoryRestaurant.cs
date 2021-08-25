@@ -73,5 +73,11 @@ namespace Data.Implementation
         {
             context.Add(restaurant);
         }
+
+        public async Task<Restaurant> GetRestaurantByNameToLowe(string name)
+        {
+            var query = context.Restaurant.Include(x => x.Tables).Include(x => x.Photos);
+            return await query.FirstAsync(x => x.Name == name.ToLower());
+        }
     }
 }
