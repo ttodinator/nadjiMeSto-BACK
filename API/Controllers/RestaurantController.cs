@@ -248,7 +248,7 @@ namespace API.Controllers
                     RestaurantTable restaurantTable = new RestaurantTable
                     {
                         RestaurantTableId = maxTableId,
-                        Seating = 6,
+                        Seating = 8,
                         TableNumber = tableNumber
                     };
                     restaurant.Tables.Add(restaurantTable);
@@ -260,7 +260,7 @@ namespace API.Controllers
                     RestaurantTable restaurantTable = new RestaurantTable
                     {
                         RestaurantTableId = maxTableId,
-                        Seating = 6,
+                        Seating = 10,
                         TableNumber = tableNumber
                     };
                     restaurant.Tables.Add(restaurantTable);
@@ -272,7 +272,7 @@ namespace API.Controllers
                     RestaurantTable restaurantTable = new RestaurantTable
                     {
                         RestaurantTableId = maxTableId,
-                        Seating = 6,
+                        Seating = 12,
                         TableNumber = tableNumber
                     };
                     restaurant.Tables.Add(restaurantTable);

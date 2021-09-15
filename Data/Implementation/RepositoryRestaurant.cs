@@ -79,5 +79,31 @@ namespace Data.Implementation
             var query = context.Restaurant.Include(x => x.Tables).Include(x => x.Photos);
             return await query.FirstAsync(x => x.Name == name.ToLower());
         }
+
+        public async Task<Restaurant> GetRestaurantTables(int restaurantId,int seating )
+        {
+            var res= await context.Restaurant.Include(x => x.Tables).FirstOrDefaultAsync(x=>x.RestaurantId==restaurantId );
+
+            Restaurant restaurant = new Restaurant
+            {
+                RestaurantId = res.RestaurantId,
+                Photos = res.Photos,
+                Likes = res.Likes,
+                Adress = res.Adress,
+                PhoneNumber = res.PhoneNumber,
+                Description = res.Description,
+                Name = res.Name
+            };
+
+            restaurant.Tables = new List<RestaurantTable>();
+
+            foreach (var item in res.Tables)
+            {
+                if (item.Seating == seating) restaurant.Tables.Add(item);
+            }
+
+            return  restaurant;
+
+        }
     }
 }

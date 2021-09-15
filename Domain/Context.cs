@@ -63,7 +63,7 @@ namespace Domain
 
             builder.Entity<Reservation>().HasKey(x => new { x.ReservationId, x.RestaurantId, x.RestaurantTableId, x.TimeOfTheDay, x.Date, x.AppUserId });
 
-            builder.Entity<RestaurantTable>().HasMany(x => x.Reservations).WithOne(x => x.RestaurantTable).HasForeignKey(x => new { x.RestaurantTableId,x.RestaurantId }).OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<RestaurantTable>().HasMany(x => x.Reservations).WithOne(x => x.RestaurantTable).HasForeignKey(x => new { x.RestaurantTableId,x.RestaurantId, }).OnDelete(DeleteBehavior.NoAction);
 
         }
 
